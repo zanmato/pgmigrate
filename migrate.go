@@ -190,7 +190,7 @@ func (m *migrator) MigrateUp(ctx context.Context) error {
 		`SELECT 
 			(
 				SELECT
-				json_agg(x)
+				json_agg(x ORDER BY x.version ASC)
 				FROM json_to_recordset($1) x(version int, name text)
 				WHERE NOT EXISTS (
 					SELECT * FROM __migrations sm WHERE sm.version = x.version
